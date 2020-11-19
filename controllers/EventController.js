@@ -93,12 +93,19 @@ exports.AttendEvent = async (req, res, next) => {
 exports.DeleteEvent = async (req, res, next) => {
   const id = req.query.id;
   try {
-    let event = await Event.findOne({ id: id });
-    await event.destroy();
-    res.status(200).json({
-      msg: "Deleted successful",
-    });
+    let event = await Event.findOne({ where: { id: id } });
+    if (event) {
+      await event.destroy();
+      res.status(200).json({
+        msg: "Deleted successful",
+      });
+    } else {
+      res.status(300).json({
+        msg: `no event found with id: ${id}`,
+      });
+    }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       error: err,
     });

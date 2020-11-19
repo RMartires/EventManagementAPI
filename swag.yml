@@ -25,7 +25,7 @@ paths:
       summary: "Delete an event"
       parameters:
         - in: "query"
-          name: "eventId"
+          name: "id"
           example: 1
       responses:
         "200":
@@ -88,7 +88,7 @@ paths:
       summary: "delete a user"
       parameters:
         - in: "query"
-          name: "userId"
+          name: "id"
           example: 1
       responses:
         "200":

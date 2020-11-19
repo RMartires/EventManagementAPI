@@ -35,11 +35,17 @@ exports.CreateUser = async (req, res, next) => {
 exports.DeleteUser = async (req, res, next) => {
   let id = req.query.id;
   try {
-    let user = await User.findOne({ id: id });
-    await user.destroy();
-    res.status(200).json({
-      msg: "Deleted successful",
-    });
+    let user = await User.findOne({ where: { id: id } });
+    if (user) {
+      await user.destroy();
+      res.status(200).json({
+        msg: "Deleted successful",
+      });
+    } else {
+      res.status(300).json({
+        msg: `no user found with id: ${id}`,
+      });
+    }
   } catch (err) {
     res.status(500).json({
       error: err,
