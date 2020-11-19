@@ -1,0 +1,115 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Event Management API"
+securitySchemes:
+  bearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+  api_key:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+paths:
+  /event/create:
+    post:
+      tags:
+        - "Event"
+      summary: "Create a new event"
+      parameters:
+        - in: "body"
+          name: "event"
+          description: "event object"
+          required: true
+          schema:
+            $ref: "#/definitions/Event"
+      responses:
+        "200":
+          description: "Event Created"
+  /event/delete:
+    delete:
+      tags:
+        - "Event"
+      summary: "Create a new event"
+      parameters:
+        - in: "query"
+          name: "eventId"
+          example: 1
+      responses:
+        "200":
+          description: "Event Deleted"
+  /event/upcoming:
+    get:
+      tags:
+        - "Event"
+      summary: "Get all the upcoming events"
+      responses:
+        "200":
+          description: "all upcoming events"
+  /event/attendes:
+    get:
+      tags:
+        - "Event"
+      summary: "get all attendes of an event"
+      parameters:
+        - in: "query"
+          name: "eventId"
+          example: 1
+      responses:
+        "200":
+          description: "Get all attendees of an event"
+  /event/private/attend/:
+    put:
+      tags:
+        - "Event"
+      summary: "logged in user set attend for an event"
+      parameters:
+        - in: "query"
+          name: "eventId"
+          example: 1
+      responses:
+        "200":
+          description: "logged in user will attend this event"
+        "401":
+          description: "No auth found"
+      security:
+        - api_key: []
+definitions:
+  Event:
+    type: "object"
+    properties:
+      event:
+        type: "object"
+        properties:
+          title:
+            type: "String"
+          description:
+            type: "String"
+          image:
+            type: "String"
+          date:
+            type: "String"
+            format: "date"
+          location:
+            type: "String"
+          allowed_attendees:
+            type: "Integer"
+          waitlist:
+            type: "String"
+          startTime:
+            type: "String"
+            format: "date-time"
+          endTime:
+            type: "String"
+            format: "date-time"
+        example:
+          title: example title
+          description: example description
+          image: example imageURL
+          date: Wed Nov 19 2020
+          location: example loc
+          allowed_attendees: 2
+          waitlist: example wait
+          startTime: Wed Nov 19 2020 18:37:00
+          endTime: Wed Nov 22 2020 18:37:00
