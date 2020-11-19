@@ -22,7 +22,7 @@ paths:
     delete:
       tags:
         - "Event"
-      summary: "Create a new event"
+      summary: "Delete an event"
       parameters:
         - in: "query"
           name: "eventId"
@@ -66,6 +66,33 @@ paths:
           description: "No auth found"
       security:
         - Auth: []
+  /user/create:
+    post:
+      tags:
+        - "User"
+      summary: "Creates a user"
+      parameters:
+        - in: "body"
+          name: "user"
+          description: "user object"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "User Created"
+  /user/delete:
+    delete:
+      tags:
+        - "User"
+      summary: "delete a user"
+      parameters:
+        - in: "query"
+          name: "userId"
+          example: 1
+      responses:
+        "200":
+          description: "User Deleted"
 definitions:
   Event:
     type: "object"
@@ -104,8 +131,22 @@ definitions:
           waitlist: example wait
           startTime: Wed Nov 19 2020 18:37:00
           endTime: Wed Nov 22 2020 18:37:00
+  User:
+    type: "object"
+    properties:
+      user:
+        type: "object"
+        properties:
+          name:
+            type: "String"
+          email:
+            type: "String"
+        example:
+          name: "Jarvis"
+          email: "Jarvis@gmail.com"
 securityDefinitions:
   Auth:
     type: "apiKey"
     name: "Authorization"
     in: "header"
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicm9oaXQifQ.u27JBV9E3sXSUBq-wS6ZqqV0cRf--rMwZqREVtF_9TQ"

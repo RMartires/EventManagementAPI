@@ -45,11 +45,11 @@ exports.CreateEvent = async (req, res, next) => {
 };
 
 exports.AttendEvent = async (req, res, next) => {
-  const eventId = req.body.eventId;
+  const eventId = req.query.eventId;
   try {
     let user = await User.findOne({ where: { name: req.token.name } });
-    let event = await Event.findByPk(eventId);
-    if (user) {
+    let event = await Event.findOne({ where: { id: eventId } });
+    if (user && event) {
       const attendees = await database.model("attendees");
       let allattendees = await attendees.findAll({
         where: {
@@ -72,9 +72,15 @@ exports.AttendEvent = async (req, res, next) => {
         });
       }
     } else {
-      res.status(500).json({
-        error: "no user found, token error",
-      });
+      if (!user) {
+        res.status(500).json({
+          error: "no user found, token error",
+        });
+      } else {
+        res.status(500).json({
+          error: "no event found",
+        });
+      }
     }
   } catch (err) {
     console.log(err);
