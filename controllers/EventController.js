@@ -48,16 +48,29 @@ exports.AttendEvent = async (req, res, next) => {
   const eventId = req.body.eventId;
   try {
     let user = await User.findOne({ where: { name: req.token.name } });
+    let event = await Event.findByPk(eventId);
     if (user) {
       const attendees = await database.model("attendees");
-      let response = await attendees.create({
-        UserId: user.id,
-        EventId: eventId,
+      let allattendees = await attendees.findAll({
+        where: {
+          eventId: eventId,
+        },
       });
-      res.status(200).json({
-        msg: "Done",
-        response: response,
-      });
+
+      if (allattendees.length < event.allowed_attendees) {
+        let response = await attendees.create({
+          UserId: user.id,
+          EventId: eventId,
+        });
+        res.status(200).json({
+          msg: "Done",
+          response: response,
+        });
+      } else {
+        res.status(501).json({
+          msg: "attendees at capacity",
+        });
+      }
     } else {
       res.status(500).json({
         error: "no user found, token error",
