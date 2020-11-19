@@ -3,16 +3,31 @@ const User = require("../models/User");
 
 exports.CreateUser = async (req, res, next) => {
   let user = req.body.user;
-  try {
-    let response = await User.create(user);
-    response = response.toJSON();
-    res.status(200).json({
-      msg: "User Created",
-      user: response,
-    });
-  } catch (err) {
-    res.status(500).json({
-      error: err,
+  const requiredKeys = ["name", "email"];
+  let keyNotPresent = [];
+  requiredKeys.forEach((el) => {
+    if (!user.hasOwnProperty(el)) {
+      keyNotPresent.push(el);
+    }
+  });
+
+  if (keyNotPresent.length === 0) {
+    try {
+      let response = await User.create(user);
+      response = response.toJSON();
+      res.status(200).json({
+        msg: "User Created",
+        user: response,
+      });
+    } catch (err) {
+      res.status(500).json({
+        error: err,
+      });
+    }
+  } else {
+    res.status(400).json({
+      error: "params error",
+      msg: `params missing: ${keyNotPresent}`,
     });
   }
 };

@@ -5,16 +5,41 @@ const User = require("../models/User");
 
 exports.CreateEvent = async (req, res, next) => {
   const event = req.body.event;
-  try {
-    let response = await Event.create(event);
-    response = response.toJSON();
-    res.status(200).json({
-      msg: "Event Creaed",
-      event: response,
-    });
-  } catch (err) {
-    res.status(500).json({
-      error: err,
+  const requiredKeys = [
+    "title",
+    "description",
+    "image",
+    "date",
+    "location",
+    "allowed_attendees",
+    "waitlist",
+    "startTime",
+    "endTime",
+  ];
+  let keyNotPresent = [];
+  requiredKeys.forEach((el) => {
+    if (!event.hasOwnProperty(el)) {
+      keyNotPresent.push(el);
+    }
+  });
+
+  if (keyNotPresent.length === 0) {
+    try {
+      let response = await Event.create(event);
+      response = response.toJSON();
+      res.status(200).json({
+        msg: "Event Creaed",
+        event: response,
+      });
+    } catch (err) {
+      res.status(500).json({
+        error: err,
+      });
+    }
+  } else {
+    res.status(400).json({
+      error: "params error",
+      msg: `params missign: ${keyNotPresent}`,
     });
   }
 };
