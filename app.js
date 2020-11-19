@@ -38,7 +38,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerdocs));
 
 //connect to db
 app.use("/", async (req, res, next) => {
-  await dbService.start(true, req, res, next);
+  await dbService.start(process.env.migrate, req, res, next);
 });
 
 app.use("/event/", EventRoutes);

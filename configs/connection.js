@@ -1,7 +1,7 @@
 exports.connection = {
-  database: "eventmanagement",
-  username: "root",
-  password: "ddbbzz",
-  host: "127.0.0.1",
-  dialect: "mysql",
+  database: process.env.database,
+  username: process.env.username,
+  password: process.env.password,
+  host: process.env.host,
+  dialect: process.env.dialect,
 };
