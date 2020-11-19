@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const User = require("../models/User");
 
 exports.CreateUser = async (req, res, next) => {
-  let user = req.body.user;
+  let user = req.body.user || {};
   const requiredKeys = ["name", "email"];
   let keyNotPresent = [];
   requiredKeys.forEach((el) => {

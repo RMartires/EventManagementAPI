@@ -2,15 +2,6 @@ swagger: "2.0"
 info:
   version: "1.0.0"
   title: "Event Management API"
-securitySchemes:
-  bearerAuth:
-    type: http
-    scheme: bearer
-    bearerFormat: JWT
-  api_key:
-    type: "apiKey"
-    name: "Authorization"
-    in: "header"
 paths:
   /event/create:
     post:
@@ -74,7 +65,7 @@ paths:
         "401":
           description: "No auth found"
       security:
-        - api_key: []
+        - Auth: []
 definitions:
   Event:
     type: "object"
@@ -113,3 +104,8 @@ definitions:
           waitlist: example wait
           startTime: Wed Nov 19 2020 18:37:00
           endTime: Wed Nov 22 2020 18:37:00
+securityDefinitions:
+  Auth:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"

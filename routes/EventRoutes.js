@@ -10,7 +10,7 @@ router.post("/create/", EventController.CreateEvent);
 
 router.put("/private/attend/", EventController.AttendEvent);
 
-router.get("/delete/", EventController.DeleteEvent);
+router.delete("/delete/", EventController.DeleteEvent);
 
 router.get("/upcoming/", EventController.GetUpcomingEvent);
 

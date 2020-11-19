@@ -4,7 +4,7 @@ const Event = require("../models/Event");
 const User = require("../models/User");
 
 exports.CreateEvent = async (req, res, next) => {
-  const event = req.body.event;
+  const event = req.body.event || {};
   const requiredKeys = [
     "title",
     "description",
